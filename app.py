@@ -25,24 +25,35 @@ class IoCSearcher:
     def search_cve(self, cve_id):
         try:
             # Using NIST NVD API
-            base_url = f"https://services.nvd.nist.gov/rest/json/cve/1.0/{cve_id}"
-            response = requests.get(base_url, headers=self.headers)
+            base_url = f"https://services.nvd.nist.gov/rest/json/cves/2.0"
+            params = {
+                'cveId': cve_id
+            }
+            response = requests.get(base_url, headers=self.headers, params=params)
             
             if response.status_code == 200:
                 data = response.json()
-                if 'result' in data:
-                    cve_data = data['result']['CVE_Items'][0]
+                if data['vulnerabilities']:
+                    cve_data = data['vulnerabilities'][0]['cve']
+                    descriptions = cve_data.get('descriptions', [])
+                    description = next((d['value'] for d in descriptions if d['lang'] == 'en'), 'No description available')
+                    
+                    metrics = cve_data.get('metrics', {}).get('cvssMetricV31', [{}])[0].get('cvssData', {})
+                    
                     return {
                         'type': 'CVE',
                         'value': cve_id,
                         'source': 'NIST NVD',
-                        'description': cve_data['cve']['description']['description_data'][0]['value'],
-                        'cvss_score': cve_data.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore', 'N/A'),
-                        'published_date': cve_data['publishedDate']
+                        'description': description,
+                        'base_score': metrics.get('baseScore', 'N/A'),
+                        'severity': metrics.get('baseSeverity', 'N/A'),
+                        'published': cve_data.get('published', 'N/A'),
+                        'last_modified': cve_data.get('lastModified', 'N/A')
                     }
+            return None
         except Exception as e:
             print(f"Error searching CVE: {str(e)}")
-        return None
+            return None
         
     def search_abuseipdb(self, keyword):
         api_key = os.getenv('ABUSEIPDB_API_KEY')
@@ -239,4 +250,4 @@ def export_to_excel():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(host='0.0.0.0', port=5000, debug=True) 
