@@ -181,5 +181,5 @@ docker-compose up -d --build
 ```
 ## Contributing
 Thank you for being interested in my project. 
-If u have any questions or improvement feel free to contribute
+If u have any questions or improvement feel free to contribute.
 my [LinkedIn](https://www.linkedin.com/in/aladghm/) if u want to get in touch.
