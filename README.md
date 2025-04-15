@@ -17,15 +17,17 @@ A web-based tool for gathering and analyzing Indicators of Compromise (IoCs) fro
   - NIST NVD
 - **Excel Export**: Generate professional reports with:
   - Separate sheets for each feed
-  - Formatted titles (size 18)
+  - Formatted titles
   - Auto-adjusted column widths
   - Comprehensive IoC details
 
 ## Setup
 
+### Option 1: Local Setup
+
 1. Clone the repository:
 ```bash
-git clone <https://github.com/mhmdsan7/ioc_gatherer.git>
+git clone <your-repository-url>
 cd ioc_gatherer
 ```
 
@@ -47,16 +49,46 @@ VIRUSTOTAL_API_KEY=your_virustotal_key
 THREATFOX_API_KEY=your_threatfox_key
 ```
 
-## Usage
+### Option 2: Docker Setup
 
-1. Start the application:
+1. Clone the repository:
 ```bash
-python app.py
+git clone <your-repository-url>
+cd ioc_gatherer
 ```
 
-2. Access the web interface at `http://localhost:5000`
+2. Create a `.env` file with your API keys (as shown above)
 
-3. For each threat feed:
+3. Choose one of these methods to run the application:
+
+   **Method A: Using Docker Compose (Recommended)**
+   ```bash
+   # Start the application
+   docker-compose up -d
+
+   # View logs
+   docker-compose logs -f
+
+   # Stop the application
+   docker-compose down
+   ```
+
+   **Method B: Using Docker directly**
+   ```bash
+   # Build the image
+   docker build -t ioc-gatherer .
+
+   # Run the container
+   docker run -p 5000:5000 --env-file .env ioc-gatherer
+   ```
+
+## Usage
+
+1. Access the web interface:
+   - Local setup: `http://localhost:5000`
+   - Docker setup: `http://localhost:5000`
+
+2. For each threat feed:
    - Click "Add Feed"
    - Enter a feed title
    - Input IoCs (comma-separated):
@@ -65,11 +97,11 @@ python app.py
      - File hashes (MD5, SHA1, SHA256)
      - CVE IDs (format: CVE-YYYY-XXXXX)
 
-4. Click "Search All" to gather intelligence
+3. Click "Search All" to gather intelligence
 
-5. Review the results for each feed
+4. Review the results for each feed
 
-6. Click "Export to Excel" to generate a formatted report
+5. Click "Export to Excel" to generate a formatted report
 
 ## API Endpoints
 
@@ -120,3 +152,36 @@ Request body:
 Thank you for being interested in my project. 
 If u have any questions or improvement feel free to contribute
 my [LinkedIn](https://www.linkedin.com/in/aladghm/) if u want to get in touch.
+
+## Docker Support
+The application can be containerized using Docker. The provided Docker configuration includes:
+
+### Dockerfile:
+- Uses Python 3.9 slim image for minimal size
+- Installs necessary system and Python dependencies
+- Sets up the application in a production-ready environment
+- Exposes port 5000 for web access
+
+### docker-compose.yaml:
+- Simplifies deployment and configuration
+- Manages environment variables via .env file
+- Provides persistent storage for exported files
+- Includes health checks and automatic restart
+- Makes it easier to manage the application lifecycle
+
+To use docker-compose:
+```bash
+# Start the application
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the application
+docker-compose down
+```
+
+To rebuild the container after changes:
+```bash
+docker-compose up -d --build
+```
