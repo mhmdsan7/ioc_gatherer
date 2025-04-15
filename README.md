@@ -148,11 +148,6 @@ Request body:
 - python-dotenv
 - openpyxl
 
-## Contributing
-Thank you for being interested in my project. 
-If u have any questions or improvement feel free to contribute
-my [LinkedIn](https://www.linkedin.com/in/aladghm/) if u want to get in touch.
-
 ## Docker Support
 The application can be containerized using Docker. The provided Docker configuration includes:
 
@@ -180,7 +175,10 @@ docker-compose logs -f
 # Stop the application
 docker-compose down
 ```
-
+## Contributing
+Thank you for being interested in my project. 
+If u have any questions or improvement feel free to contribute
+my [LinkedIn](https://www.linkedin.com/in/aladghm/) if u want to get in touch.
 To rebuild the container after changes:
 ```bash
 docker-compose up -d --build
