@@ -57,7 +57,7 @@ git clone <your-repository-url>
 cd ioc_gatherer
 ```
 
-2. Create a `.env` file with your API keys (as shown above)
+2. Create a `.env` file with your API keys
 
 3. Choose one of these methods to run the application:
 
